@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Reservas - Laboratorio</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Encabezado Principal -->
+  <header class="app-header">
+    <div class="container header-content">
+      <div class="header-title">
+        <h1>🔬 Laboratorio Central · Reservas</h1>
+        <p>Gestión local de disponibilidad de instrumental y equipamiento científico</p>
+      </div>
+      <div>
+        <button id="btn-run-tests" class="btn btn-outline" title="Ejecuta la suite de verificación de reglas críticas">
+          🧪 Ejecutar Pruebas Automáticas
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Sección Superior: Inventario Precargado en Tiempo Real -->
+    <section class="panel">
+      <div class="panel-header">
+        <h2 class="panel-title">📦 Inventario de Equipos</h2>
+        <span class="text-muted text-small">5 unidades físicas registradas</span>
+      </div>
+      <div id="inventory-grid" class="inventory-grid">
+        <!-- Renderizado dinámico desde app.js -->
+      </div>
+    </section>
+
+    <!-- Layout Dividido: Formulario a la izquierda, Historial a la derecha -->
+    <div class="main-layout">
+      
+      <!-- Columna Izquierda: Formulario de Registro -->
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">📅 Nueva Reserva</h2>
+        </div>
+
+        <!-- Alerta para mensajes de éxito o error -->
+        <div id="form-feedback" class="alert" role="alert" aria-live="polite"></div>
+
+        <form id="reservation-form" novalidate>
+          <div class="form-group">
+            <label for="unit-select">Equipo a reservar *</label>
+            <select id="unit-select" class="form-control" required>
+              <option value="" disabled selected>Cargando catálogo...</option>
+            </select>
+            <span class="field-hint">Solo se permite reservar 1 unidad por registro.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="requester-input">Nombre del Solicitante *</label>
+            <input 
+              type="text" 
+              id="requester-input" 
+              class="form-control" 
+              placeholder="Ej: Dra. María González" 
+              required
+              autocomplete="name"
+            >
+            <span class="field-hint">No puede quedar vacío ni contener solo espacios.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="start-time">Fecha y Hora de Inicio *</label>
+            <input 
+              type="datetime-local" 
+              id="start-time" 
+              class="form-control" 
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="end-time">Fecha y Hora de Fin *</label>
+            <input 
+              type="datetime-local" 
+              id="end-time" 
+              class="form-control" 
+              required
+            >
+            <span class="field-hint">El inicio debe ser estrictamente anterior al fin.</span>
+          </div>
+
+          <button type="submit" id="submit-btn" class="btn btn-primary btn-block">
+            Confirmar Reserva
+          </button>
+        </form>
+      </section>
+
+      <!-- Columna Derecha: Historial y Control de Reservas -->
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">📋 Historial de Reservas</h2>
+          <span class="text-muted text-small">Persistencia en localStorage</span>
+        </div>
+
+        <!-- Filtros Rápidos -->
+        <div class="table-controls">
+          <div>
+            <label for="status-filter" class="text-small text-muted">Estado:</label>
+            <select id="status-filter" class="form-control">
+              <option value="ALL">Todas (Activas y Canceladas)</option>
+              <option value="ACTIVA">Solo Activas</option>
+              <option value="CANCELADA">Solo Canceladas</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="unit-filter" class="text-small text-muted">Filtrar Equipo:</label>
+            <select id="unit-filter" class="form-control">
+              <option value="ALL">Todas las unidades</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Tabla de Reservas -->
+        <div class="table-responsive">
+          <table class="data-table" aria-label="Tabla de reservas de laboratorio">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Equipo</th>
+                <th>Solicitante</th>
+                <th>Horario Solicitado</th>
+                <th>Estado</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="reservations-tbody">
+              <!-- Renderizado dinámico desde app.js -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Estado Vacío -->
+        <div id="reservations-empty" class="empty-state" style="display: none;">
+          <p>No hay reservas registradas en este momento.</p>
+          <small class="text-muted">Utilice el formulario de la izquierda para generar la primera reserva.</small>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Sección Inferior: Panel de Resultados de Pruebas Automáticas -->
+    <section class="panel">
+      <div class="panel-header">
+        <h3 class="panel-title">🧪 Suite de Pruebas de Reglas de Negocio</h3>
+        <span class="text-muted text-small">Validación automática de reglas críticas y persistencia</span>
+      </div>
+      <p class="text-muted text-small" style="margin-bottom: 1rem;">
+        Haga clic en <strong>"Ejecutar Pruebas Automáticas"</strong> para validar en vivo el rechazo de solapamiento, límites consecutivos, persistencia, entradas inválidas y cancelación sin pérdida de historial.
+      </p>
+      <div id="tests-output">
+        <p class="text-muted text-small"><em>Las pruebas aún no se han ejecutado en esta sesión. Presione el botón superior para correrlas.</em></p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Scripts en orden de dependencia -->
+  <script src="reservations.js"></script>
+  <script src="tests.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
