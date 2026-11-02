@@ -99,9 +99,9 @@
           <span class="text-muted text-small">Persistencia en localStorage</span>
         </div>
 
-        <!-- Filtros Rápidos -->
+        <!-- Filtros Rápidos y Acciones -->
         <div class="table-controls">
-          <div>
+          <div class="control-group">
             <label for="status-filter" class="text-small text-muted">Estado:</label>
             <select id="status-filter" class="form-control">
               <option value="ALL">Todas (Activas y Canceladas)</option>
@@ -110,11 +110,17 @@
             </select>
           </div>
 
-          <div>
+          <div class="control-group">
             <label for="unit-filter" class="text-small text-muted">Filtrar Equipo:</label>
             <select id="unit-filter" class="form-control">
               <option value="ALL">Todas las unidades</option>
             </select>
+          </div>
+
+          <div class="table-control-actions">
+            <button id="btn-clear-cancelled" type="button" class="btn btn-outline btn-sm" title="Quitar todas las reservas canceladas de la lista">
+              🗑️ Limpiar reservas canceladas
+            </button>
           </div>
         </div>
 

@@ -342,6 +342,25 @@ class ReservationSystem {
       reservation
     };
   }
+
+  /**
+   * Elimina permanentemente del historial todas las reservas canceladas.
+   * @returns {{ success: boolean, count: number }}
+   */
+  clearCancelledReservations() {
+    const all = this.getAllReservations();
+    const remaining = all.filter(res => res.status !== RESERVATION_STATUS.CANCELLED);
+    const removedCount = all.length - remaining.length;
+
+    if (removedCount > 0) {
+      this._saveReservations(remaining);
+    }
+
+    return {
+      success: true,
+      count: removedCount
+    };
+  }
 }
 
 // Exposición en el entorno global del navegador

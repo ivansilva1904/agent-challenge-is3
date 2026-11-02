@@ -301,6 +301,56 @@ def test_persistencia_datos(page: Page):
     expect(rows.first.locator(".badge-active")).to_contain_text("Activa")
 
 
+def test_limpiar_reservas_canceladas(page: Page):
+    """
+    Verifica que el botón 'Limpiar reservas canceladas' elimine de la lista y de localStorage
+    todas las reservas con estado Cancelada, manteniendo las reservas activas.
+    """
+    # 1. Crear una reserva para MIC-01 y cancelarla
+    fill_reservation_form(
+        page,
+        unit_id="MIC-01",
+        requester="Investigador Cancelado",
+        start_time="2026-11-10T10:00",
+        end_time="2026-11-10T11:00"
+    )
+    page.on("dialog", lambda dialog: dialog.accept())
+    page.locator("#reservations-tbody .btn-cancel-action").first.click()
+    expect(page.locator("#reservations-tbody .badge-cancelled")).to_be_visible()
+
+    # 2. Crear una segunda reserva activa para OSC-01
+    fill_reservation_form(
+        page,
+        unit_id="OSC-01",
+        requester="Investigador Activo",
+        start_time="2026-11-10T12:00",
+        end_time="2026-11-10T13:00"
+    )
+    expect(page.locator("#reservations-tbody tr.res-row")).to_have_count(2)
+
+    # 3. Hacer clic en el botón 'Limpiar reservas canceladas'
+    page.click("#btn-clear-cancelled")
+
+    # 4. Verificar mensaje de éxito
+    feedback = page.locator("#form-feedback")
+    expect(feedback).to_be_visible()
+    expect(feedback).to_have_class(re.compile(r"alert-success"))
+    expect(feedback).to_contain_text("Se quitaron 1 reserva(s) cancelada(s)")
+
+    # 5. La tabla solo debe conservar la reserva activa
+    rows = page.locator("#reservations-tbody tr.res-row")
+    expect(rows).to_have_count(1)
+    expect(rows.first).to_contain_text("OSC-01")
+    expect(page.locator("#reservations-tbody .badge-cancelled")).to_have_count(0)
+
+    # 6. Recargar la página y verificar persistencia en localStorage de la eliminación
+    page.reload()
+    rows_reloaded = page.locator("#reservations-tbody tr.res-row")
+    expect(rows_reloaded).to_have_count(1)
+    expect(rows_reloaded.first).to_contain_text("OSC-01")
+    expect(page.locator("#reservations-tbody .badge-cancelled")).to_have_count(0)
+
+
 if __name__ == "__main__":
     # Permite ejecutar directamente con: python tests.py
     sys.exit(pytest.main(["-v", __file__]))

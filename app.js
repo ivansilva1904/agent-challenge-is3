@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const emptyState = document.getElementById('reservations-empty');
   const statusFilter = document.getElementById('status-filter');
   const unitFilter = document.getElementById('unit-filter');
+  const clearCancelledBtn = document.getElementById('btn-clear-cancelled');
 
   // 3. Inicialización de la vista
   initDateTimeInputs();
@@ -274,6 +275,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   if (unitFilter) {
     unitFilter.addEventListener('change', renderReservationsTable);
+  }
+
+  // 12. Limpiar reservas canceladas de la lista y del historial
+  if (clearCancelledBtn) {
+    clearCancelledBtn.addEventListener('click', () => {
+      const result = reservationSystem.clearCancelledReservations();
+      if (result.count > 0) {
+        showFeedback('success', `Se quitaron ${result.count} reserva(s) cancelada(s) de la lista.`);
+      } else {
+        showFeedback('error', 'No hay reservas canceladas para quitar de la lista.');
+      }
+      renderReservationsTable();
+    });
   }
 
   // Utilidades auxiliares

@@ -371,15 +371,63 @@ body {
 /* Filtros y controles de tabla */
 .table-controls {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  align-items: center;
+  flex-wrap: nowrap;
+  gap: 0.65rem;
+  align-items: flex-end;
   margin-bottom: 1rem;
 }
 
+.table-controls .control-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.table-controls .control-group label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
 .table-controls select {
-  padding: 0.4rem 0.6rem;
+  padding: 0.35rem 0.5rem;
   font-size: 0.8rem;
+  height: 34px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#status-filter {
+  width: 165px;
+  max-width: 165px;
+}
+
+#unit-filter {
+  width: 175px;
+  max-width: 175px;
+}
+
+.table-control-actions {
+  margin-left: auto;
+}
+
+.table-control-actions .btn {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+  height: 34px;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .table-controls {
+    flex-wrap: wrap;
+  }
+  #status-filter,
+  #unit-filter,
+  .table-control-actions,
+  .table-control-actions .btn {
+    width: 100%;
+    max-width: 100%;
+  }
 }
 
 /* Tabla de reservas */
