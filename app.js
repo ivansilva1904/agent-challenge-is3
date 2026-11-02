@@ -8,7 +8,6 @@
  * - Manejar el envío del formulario con validación interactiva y retroalimentación clara.
  * - Renderizar la tabla de historial con estados visuales y acciones de cancelación.
  * - Configurar valores iniciales convenientes en los inputs de fecha/hora.
- * - Conectar la suite de pruebas automáticas con la interfaz.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -25,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const inventoryContainer = document.getElementById('inventory-grid');
   const reservationsTbody = document.getElementById('reservations-tbody');
   const emptyState = document.getElementById('reservations-empty');
-  const runTestsBtn = document.getElementById('btn-run-tests');
   const statusFilter = document.getElementById('status-filter');
   const unitFilter = document.getElementById('unit-filter');
 
@@ -61,9 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Mensajes informativos en consola para desarrolladores y evaluadores
+  // Mensaje informativo en consola
   console.log('%c🔬 Sistema de Reservas de Laboratorio inicializado.', 'color: #1e3a8a; font-weight: bold; font-size: 13px;');
-  console.log('ℹ️ Para ejecutar la suite de pruebas desde esta consola, ejecuta: runReservationTests()');
 
   // 5. Poblar el selector de unidades del formulario
   function populateInventoryDropdown() {
@@ -277,22 +274,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   if (unitFilter) {
     unitFilter.addEventListener('change', renderReservationsTable);
-  }
-
-  // 12. Escuchador para ejecutar pruebas automáticas desde la UI
-  if (runTestsBtn) {
-    runTestsBtn.addEventListener('click', () => {
-      if (typeof window.runReservationTests === 'function') {
-        const results = window.runReservationTests({ renderToDOM: true });
-        const allPassed = results.every(r => r.passed);
-        showFeedback(
-          allPassed ? 'success' : 'error',
-          allPassed
-            ? '¡Todas las pruebas automáticas pasaron con éxito! (Ver panel inferior y consola).'
-            : 'Se detectaron fallos en las pruebas. Revisa el reporte.'
-        );
-      }
-    });
   }
 
   // Utilidades auxiliares

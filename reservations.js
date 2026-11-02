@@ -28,7 +28,7 @@ const STORAGE_KEY = 'lab_reservations_data_v1';
 class ReservationSystem {
   /**
    * @param {Object} [options]
-   * @param {Storage} [options.storage] - Interfaz compatible con localStorage (permite inyectar mock para tests).
+   * @param {Storage} [options.storage] - Interfaz compatible con localStorage.
    */
   constructor(options = {}) {
     this._memoryFallback = [];
@@ -342,32 +342,9 @@ class ReservationSystem {
       reservation
     };
   }
-
-  /**
-   * Restablece todas las reservas (útil para pruebas y reinicios limpios).
-   */
-  clearAll() {
-    this._memoryFallback = [];
-    if (this.storage) {
-      try {
-        this.storage.removeItem(STORAGE_KEY);
-      } catch (err) {
-        console.error('Error al limpiar storage:', err);
-      }
-    }
-  }
 }
 
-// Soporte para CommonJS (Node.js) y Navegador (window)
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = {
-    INVENTORY,
-    RESERVATION_STATUS,
-    STORAGE_KEY,
-    ReservationSystem
-  };
-}
-
+// Exposición en el entorno global del navegador
 if (typeof window !== 'undefined') {
   window.INVENTORY = INVENTORY;
   window.RESERVATION_STATUS = RESERVATION_STATUS;

@@ -15,11 +15,6 @@
         <h1>🔬 Laboratorio Central · Reservas</h1>
         <p>Gestión local de disponibilidad de instrumental y equipamiento científico</p>
       </div>
-      <div>
-        <button id="btn-run-tests" class="btn btn-outline" title="Ejecuta la suite de verificación de reglas críticas">
-          🧪 Ejecutar Pruebas Automáticas
-        </button>
-      </div>
     </div>
   </header>
 
@@ -151,25 +146,10 @@
 
     </div>
 
-    <!-- Sección Inferior: Panel de Resultados de Pruebas Automáticas -->
-    <section class="panel">
-      <div class="panel-header">
-        <h3 class="panel-title">🧪 Suite de Pruebas de Reglas de Negocio</h3>
-        <span class="text-muted text-small">Validación automática de reglas críticas y persistencia</span>
-      </div>
-      <p class="text-muted text-small" style="margin-bottom: 1rem;">
-        Haga clic en <strong>"Ejecutar Pruebas Automáticas"</strong> para validar en vivo el rechazo de solapamiento, límites consecutivos, persistencia, entradas inválidas y cancelación sin pérdida de historial.
-      </p>
-      <div id="tests-output">
-        <p class="text-muted text-small"><em>Las pruebas aún no se han ejecutado en esta sesión. Presione el botón superior para correrlas.</em></p>
-      </div>
-    </section>
-
   </main>
 
   <!-- Scripts en orden de dependencia -->
   <script src="reservations.js"></script>
-  <script src="tests.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
